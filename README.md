@@ -1,7 +1,7 @@
 Gravity-Forms-ACF-Field
 =======================
 
-This is an Advanced Custom Field custom field to select one or many Gravity Forms.
+This is an Advanced Custom Field custom field to select one or many [Gravity Forms](http://www.gravityhelp.com/).
 
 This provides a field that lets you select from a list of active Gravity Forms.
 
@@ -36,3 +36,11 @@ Written by Adam Pope of Storm Consultancy - <http://www.stormconsultancy.co.uk>
 Storm Consultancy are a web design and development agency based in Bath, UK.
 
 If you are looking for a [Bath WordPress Developer](http://www.stormconsultancy.co.uk/Services/Bath-WordPress-Developers), then [get in touch](http://www.stormconsultancy.co.uk/Contact)!
+
+
+Credits
+=======
+
+Thanks for Lewis Mcarey for the Users Field ACF add-on on which we based this - https://github.com/lewismcarey/User-Field-ACF-Add-on
+
+Thanks to rocketgenius for the absolutely fantastic Gravity Forms plugin!

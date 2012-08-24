@@ -2,15 +2,14 @@
 
 /*
  * Advanced Custom Fields - Gravity Forms Multi-Select Field add-on
- *  
  * 
- * Contributors: by @adam_pope of @stormuk
+ * Written by @adam_pope of @stormuk
  *
  * Tags: acf, acf add-on, forms, gravity forms, custom field, form field
- * Requires at least: 3.0
- * Tested up to: 3.3.1
+ * Tested up to: 3.4.1
  * Stable tag: 0.0
  * 
+ * Docs: https://github.com/stormuk/Gravity-Forms-ACF-Field
  */
  
 class Gravity_Forms_field extends acf_Field
@@ -34,7 +33,7 @@ class Gravity_Forms_field extends acf_Field
       
       // set name / title
       $this->name = 'gravity_forms_field'; // variable name (no spaces / special characters / etc)
-    $this->title = __("Gravity Forms",'acf'); // field label (Displayed in edit screens)
+      $this->title = __("Gravity Forms",'acf'); // field label (Displayed in edit screens)
     
     }
 
