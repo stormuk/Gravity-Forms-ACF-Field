@@ -339,7 +339,7 @@ class Gravity_Forms_field extends acf_Field
     }
     else
     {
-      $value = RGFormsModel::get_form($v);
+      $value = RGFormsModel::get_form($value);
     }
     
     // return value
