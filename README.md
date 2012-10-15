@@ -13,9 +13,11 @@ Download or clone the repository for Gravity-Forms-ACF-Field and put the gravity
 
 Register the field in your functions.php file
 
-if(function_exists('register_field')) { 
+```
+if(function_exists('register_field')) {  
   register_field(‘Gravity_Forms_field', dirname(__File__) . '/Custom-Fields/gravity_forms.php');
 }
+```
 
 Using the field
 ===============
