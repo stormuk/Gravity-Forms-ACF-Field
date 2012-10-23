@@ -26,6 +26,29 @@ The field lets you pick one or many fields.
 
 The data returned is either a Form object or an array of [Form objects](http://www.gravityhelp.com/documentation/page/Form_Object).
 
+If you have selected a single form and you want to display the form on the page, you can use:
+
+```
+<?php 
+    $form = get_field('your_form_field');
+    gravity_form_enqueue_scripts($form->id, true);
+    gravity_form($form->id, true, true, false, '', true, 1); 
+?>
+```
+
+You can find out more about the gravity_form method to embed a form on a page in their [documentation](http://www.gravityhelp.com/documentation/page/Embedding_A_Form#Function_Call)
+
+If you are using the field to select multiple forms, you will have to iterate over the array.  You can then use the form object as you like:
+
+```
+<?php
+    $forms = get_field('your_forms');
+	
+    foreach($forms as $form){
+        echo $form->title;  
+    }
+?>
+```
 
 
 About
