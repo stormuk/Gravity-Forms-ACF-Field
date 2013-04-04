@@ -4,56 +4,54 @@
  * Advanced Custom Fields - Gravity Forms Multi-Select Field add-on
  * 
  * Written by @adam_pope of @stormuk
+ * Updated for 4.0 compatability by @ajmorris
  *
  * Tags: acf, acf add-on, forms, gravity forms, custom field, form field
- * Tested up to: 3.4.1
- * Stable tag: 0.0
+ * Tested up to: 4.0.1
+ * Stable tag: 0.1
  * 
  * Docs: https://github.com/stormuk/Gravity-Forms-ACF-Field
  */
  
-class Gravity_Forms_field extends acf_Field
+class gravity_forms_field extends acf_field
 {
 
-  /*--------------------------------------------------------------------------------------
+  /*
+  *  __construct
   *
-  * Constructor
-  * - This function is called when the field class is initalized on each page.
-  * - Here you can add filters / actions and setup any other functionality for your field
+  *  Set name / label needed for actions / filters
   *
-  * @author Elliot Condon
-  * @since 2.2.0
-  * 
-  *-------------------------------------------------------------------------------------*/
+  *  @since 3.6
+  *  @date  23/01/13
+  */
   
-  function __construct($parent)
+  function __construct()
   {
-    // do not delete!
-      parent::__construct($parent);
-      
-      // set name / title
-      $this->name = 'gravity_forms_field'; // variable name (no spaces / special characters / etc)
-      $this->title = __("Gravity Forms",'acf'); // field label (Displayed in edit screens)
-    
-    }
+
+      // vars
+      $this->name = 'gravity_forms_field';
+      $this->label = __('Gravity Forms');
+  
+
+      // do not delete!
+      parent::__construct();    
+  }
 
   
-  /*--------------------------------------------------------------------------------------
+  /*
+  *  create_options()
   *
-  * create_options
-  * - this function is called from core/field_meta_box.php to create extra options
-  * for your field
+  *  Create extra options for your field. This is rendered when editing a field.
+  *  The value of $field['name'] can be used (like bellow) to save extra data to the $field
   *
-  * @params
-  * - $key (int) - the $_POST obejct key required to save the options to the field
-  * - $field (array) - the field object
+  *  @type  action
+  *  @since 3.6
+  *  @date  23/01/13
   *
-  * @author Elliot Condon
-  * @since 2.2.0
-  * 
-  *-------------------------------------------------------------------------------------*/
+  *  @param $field  - an array holding all the field's data
+  */
   
-  function create_options($key, $field)
+  function create_options($field)
   {
     //role_capability
     // defaults
@@ -67,9 +65,9 @@ class Gravity_Forms_field extends acf_Field
       </td>
       <td>
 <?php 
-        $this->parent->create_field(array(
+        $this->create_field(array(
           'type'  =>  'radio',
-          'name'  =>  'fields['.$key.'][allow_null]',
+          'name'  =>  '$field[allow_null]',
           'value' =>  $field['allow_null'],
           'choices' =>  array(
             '1' =>  'Yes',
@@ -86,9 +84,9 @@ class Gravity_Forms_field extends acf_Field
       </td>
       <td>
 <?php 
-        $this->parent->create_field(array(
+        $this->create_field(array(
           'type'  =>  'radio',
-          'name'  =>  'fields['.$key.'][multiple]',
+          'name'  =>  '$field[multiple]',
           'value' =>  $field['multiple'],
           'choices' =>  array(
             '1' =>  'Yes',
@@ -103,34 +101,17 @@ class Gravity_Forms_field extends acf_Field
   }
   
   
-  /*--------------------------------------------------------------------------------------
+  /*
+  *  create_field()
   *
-  * pre_save_field
-  * - this function is called when saving your acf object. Here you can manipulate the
-  * field object and it's options before it gets saved to the database.
+  *  Create the HTML interface for your field
   *
-  * @author Elliot Condon
-  * @since 2.2.0
-  * 
-  *-------------------------------------------------------------------------------------*/
-  
-  function pre_save_field($field)
-  {
-    // do stuff with field (mostly format options data)
-    
-    return parent::pre_save_field($field);
-  }
-  
-  
-  /*--------------------------------------------------------------------------------------
+  *  @type  action
+  *  @since 3.6
+  *  @date  23/01/13
   *
-  * create_field
-  * - this function is called on edit screens to produce the html for this field
-  *
-  * @author Elliot Condon
-  * @since 2.2.0
-  * 
-  *-------------------------------------------------------------------------------------*/
+  *  @param $field - an array holding all the field's data
+  */
   
   function create_field($field)
   {
@@ -197,76 +178,30 @@ class Gravity_Forms_field extends acf_Field
     
   }
   
-  
-  /*--------------------------------------------------------------------------------------
+  /*
+  *  update_value()
   *
-  * admin_head
-  * - this function is called in the admin_head of the edit screen where your field
-  * is created. Use this function to create css and javascript to assist your 
-  * create_field() function.
+  *  This filter is appied to the $value before it is updated in the db
   *
-  * @author Elliot Condon
-  * @since 2.2.0
-  * 
-  *-------------------------------------------------------------------------------------*/
-  
-  function admin_head()
-  {
-
-  }
-  
-  
-  /*--------------------------------------------------------------------------------------
+  *  @type  filter
+  *  @since 3.6
+  *  @date  23/01/13
   *
-  * admin_print_scripts / admin_print_styles
-  * - this function is called in the admin_print_scripts / admin_print_styles where 
-  * your field is created. Use this function to register css and javascript to assist 
-  * your create_field() function.
+  *  @param $value - the value which will be saved in the database
+  *  @param $field - the field array holding all the field options
+  *  @param $post_id - the $post_id of which the value will be saved
   *
-  * @author Elliot Condon
-  * @since 3.0.0
-  * 
-  *-------------------------------------------------------------------------------------*/
-  
-  function admin_print_scripts()
-  {
-  
-  }
-  
-  function admin_print_styles()
-  {
-    
-  }
-
-  
-  /*--------------------------------------------------------------------------------------
-  *
-  * update_value
-  * - this function is called when saving a post object that your field is assigned to.
-  * the function will pass through the 3 parameters for you to use.
-  *
-  * @params
-  * - $post_id (int) - usefull if you need to save extra data or manipulate the current
-  * post object
-  * - $field (array) - usefull if you need to manipulate the $value based on a field option
-  * - $value (mixed) - the new value of your field.
-  *
-  * @author Elliot Condon
-  * @since 2.2.0
-  * 
-  *-------------------------------------------------------------------------------------*/
+  *  @return  $value - the modified value
+  */
   
   function update_value($post_id, $field, $value)
   {
     // do stuff with value
     
     // save value
-    parent::update_value($post_id, $field, $value);
+    return $value;
   }
-  
-  
-  
-  
+    
   
   /*--------------------------------------------------------------------------------------
   *
@@ -295,25 +230,22 @@ class Gravity_Forms_field extends acf_Field
   }
   
   
-  /*--------------------------------------------------------------------------------------
+  /*
+  *  format_value_for_api()
   *
-  * get_value_for_api
-  * - called from your template file when using the API functions (get_field, etc). 
-  * This function is useful if your field needs to format the returned value
+  *  This filter is appied to the $value after it is loaded from the db and before it is passed back to the api functions such as the_field
   *
-  * @params
-  * - $post_id (int) - the post ID which your value is attached to
-  * - $field (array) - the field object.
+  *  @type  filter
+  *  @since 3.6
+  *  @date  23/01/13
   *
-  * @author Elliot Condon
-  * @since 3.0.0
-  * 
-  *-------------------------------------------------------------------------------------*/
-  
-  function get_value_for_api($post_id, $field)
+  *  @param $value  - the value which was loaded from the database
+  *  @param $field  - the field array holding all the field options
+  *
+  *  @return  $value  - the modified value
+  */
+  function format_value_for_api($value, $field)
   {
-    // get value
-    $value = $this->get_value($post_id, $field);
     
     // format value
     
@@ -345,7 +277,81 @@ class Gravity_Forms_field extends acf_Field
     // return value
     return $value;
   }
+
+
+  /*
+  *  input_admin_enqueue_scripts()
+  *
+  *  This action is called in the admin_enqueue_scripts action on the edit screen where your field is created.
+  *  Use this action to add css + javascript to assist your create_field() action.
+  *
+  *  $info  http://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
+  *  @type  action
+  *  @since 3.6
+  *  @date  23/01/13
+  */
+
+  function input_admin_enqueue_scripts()
+  {
+
+  }
+
+  
+  /*
+  *  input_admin_head()
+  *
+  *  This action is called in the admin_head action on the edit screen where your field is created.
+  *  Use this action to add css and javascript to assist your create_field() action.
+  *
+  *  @info  http://codex.wordpress.org/Plugin_API/Action_Reference/admin_head
+  *  @type  action
+  *  @since 3.6
+  *  @date  23/01/13
+  */
+
+  function input_admin_head()
+  {
+
+  }
+  
+  
+  /*
+  *  field_group_admin_enqueue_scripts()
+  *
+  *  This action is called in the admin_enqueue_scripts action on the edit screen where your field is edited.
+  *  Use this action to add css + javascript to assist your create_field_options() action.
+  *
+  *  $info  http://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
+  *  @type  action
+  *  @since 3.6
+  *  @date  23/01/13
+  */
+
+  function field_group_admin_enqueue_scripts()
+  {
+
+  }
+
+  
+  /*
+  *  field_group_admin_head()
+  *
+  *  This action is called in the admin_head action on the edit screen where your field is edited.
+  *  Use this action to add css and javascript to assist your create_field_options() action.
+  *
+  *  @info  http://codex.wordpress.org/Plugin_API/Action_Reference/admin_head
+  *  @type  action
+  *  @since 3.6
+  *  @date  23/01/13
+  */
+
+  function field_group_admin_head()
+  {
+
+  }
   
 }
+
+new gravity_forms_field();
 
 ?>
