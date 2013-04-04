@@ -128,6 +128,8 @@ class gravity_forms_field extends acf_field
     } 
     
     // html
+    if (!isset($field['class']) || empty($field['class'])) $field['class'] = '';
+    
     echo '<select id="' . $field['name'] . '" class="' . $field['class'] . '" name="' . $field['name'] . '" ' . $multiple . ' >';
     
     // null
