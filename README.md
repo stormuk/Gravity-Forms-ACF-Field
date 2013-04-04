@@ -58,7 +58,7 @@ If you are using the field to select multiple forms, you will have to iterate ov
 About
 =====
 
-Version: 1.0
+Version: 2.0 for ACF 4
 
 Written by Adam Pope of Storm Consultancy - <http://www.stormconsultancy.co.uk>
 
