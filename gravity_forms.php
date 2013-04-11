@@ -198,39 +198,35 @@ class gravity_forms_field extends acf_field
   *  @return  $value - the modified value
   */
   
-  function update_value($post_id, $field, $value)
+  function update_value( $value, $post_id, $field )
   {
-    // do stuff with value
-    
     // save value
     return $value;
   }
     
   
-  /*--------------------------------------------------------------------------------------
+  /*
+  *  load_value()
   *
-  * get_value
-  * - called from the edit page to get the value of your field. This function is useful
-  * if your field needs to collect extra data for your create_field() function.
+  *  This filter is appied to the $value after it is loaded from the db
   *
-  * @params
-  * - $post_id (int) - the post ID which your value is attached to
-  * - $field (array) - the field object.
+  *  @type  filter
+  *  @since 3.6
+  *  @date  23/01/13
   *
-  * @author Elliot Condon
-  * @since 2.2.0
-  * 
-  *-------------------------------------------------------------------------------------*/
+  *  @param $value - the value found in the database
+  *  @param $post_id - the $post_id from which the value was loaded from
+  *  @param $field - the field array holding all the field options
+  *
+  *  @return  $value - the value to be saved in te database
+  */
   
-  function get_value($post_id, $field)
+  function load_value( $value, $post_id, $field )
   {
-    // get value
-    $value = parent::get_value($post_id, $field);
-    
     // format value
     
     // return value
-    return $value;    
+    return $value;
   }
   
   
@@ -248,7 +244,7 @@ class gravity_forms_field extends acf_field
   *
   *  @return  $value  - the modified value
   */
-  function format_value_for_api($value, $field)
+  function format_value_for_api($value, $post_id, $field)
   {
     
     // format value
