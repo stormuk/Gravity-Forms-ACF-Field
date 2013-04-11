@@ -65,7 +65,7 @@ class gravity_forms_field extends acf_field
       </td>
       <td>
 <?php 
-        $this->create_field(array(
+        do_action('acf/create_field', array(
           'type'  =>  'radio',
           'name'  =>  '$field[allow_null]',
           'value' =>  $field['allow_null'],
@@ -84,7 +84,7 @@ class gravity_forms_field extends acf_field
       </td>
       <td>
 <?php 
-        $this->create_field(array(
+        do_action('acf/create_field', array(
           'type'  =>  'radio',
           'name'  =>  '$field[multiple]',
           'value' =>  $field['multiple'],
