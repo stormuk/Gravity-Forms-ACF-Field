@@ -1,25 +1,37 @@
 Gravity-Forms-ACF-Field
 =======================
 
-This is an Advanced Custom Field (v4) custom field to select one or many [Gravity Forms](http://www.gravityhelp.com/).
+This is an Advanced Custom Field custom field to select one or many [Gravity Forms](http://www.gravityhelp.com/).
 
 This provides a field that lets you select from a list of active Gravity Forms.
 
-This plugin now only supports ACF 4.0.0 and higher. Use the commit [c671210ded](https://github.com/stormuk/Gravity-Forms-ACF-Field/tree/c671210ded11ebc69a842da3668dd0200f500753) for a previous version for ACF 3
+Compatibility
+============
 
+This add-on will work with:
+
+* version 4 and up
+* version 3 and below
 
 Installation
 ============
 
-Download or clone the repository for Gravity-Forms-ACF-Field and put the gravity_forms.php in your theme somewhere.  We like to create a Custom-Fields sub-directory to keep things tidy.
+This add-on can be treated as both a WP plugin and a theme include.
 
-Register the field in your functions.php file
+*Plugin*
+1. Copy the 'Gravity-Forms-ACF-field' folder into your plugins folder
+2. Activate the plugin via the Plugins admin page
+
+*Include*
+1.  Copy the 'Gravity-Forms-ACF-field' folder into your theme folder (can use sub folders). You can place the folder anywhere inside the 'wp-content' directory
+2.  Edit your functions.php file and add the code below (Make sure the path is correct to include the acf-gravity_forms.php file)
 
 ```
-add_action('acf/register_fields', 'register_additional_fields');
- 
-function register_additional_fields() {
-	include_once('custom-fields/gravity_forms.php');
+add_action('acf/register_fields', 'my_register_fields');
+
+function my_register_fields()
+{
+  include_once('acf-gravity_forms.php');
 }
 ```
 
@@ -47,7 +59,7 @@ If you are using the field to select multiple forms, you will have to iterate ov
 ```
 <?php
     $forms = get_field('your_forms');
-	
+  
     foreach($forms as $form){
         echo $form->title;  
     }
@@ -55,10 +67,12 @@ If you are using the field to select multiple forms, you will have to iterate ov
 ```
 
 
+
+
 About
 =====
 
-Version: 2.0 for ACF 4
+Version: 1.0
 
 Written by Adam Pope of Storm Consultancy - <http://www.stormconsultancy.co.uk>
 
