@@ -191,6 +191,6 @@ class acf_field_gravity_forms extends acf_field {
     // return value
     return $value;
   }
-
+}
 // create field
 new acf_field_gravity_forms();
