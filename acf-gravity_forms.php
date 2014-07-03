@@ -11,59 +11,34 @@ License URI: http://opensource.org/licenses/MIT
 */
 
 
-class acf_field_gravity_forms_plugin
-{
-	/*
-	*  Construct
-	*
-	*  @description:
-	*  @since: 3.6
-	*  @created: 1/04/13
-	*/
-
-	function __construct()
-	{
-
-		// version 4+
-		add_action('acf/register_fields', array($this, 'register_fields'));
+// 1. set text domain
+// Reference: https://codex.wordpress.org/Function_Reference/load_plugin_textdomain
+// load_plugin_textdomain( 'acf-FIELD_NAME', false, dirname( plugin_basename(__FILE__) ) . '/lang/' ); 
 
 
-		// version 3-
-		add_action( 'init', array( $this, 'init' ), 5);
-	}
 
 
-	/*
-	*  Init
-	*
-	*  @description:
-	*  @since: 3.6
-	*  @created: 1/04/13
-	*/
+// 2. Include field type for ACF5
+// $version = 5 and can be ignored until ACF6 exists
+function include_field_types_Gravity_Forms( $version ) {
 
-	function init()
-	{
-		if(function_exists('register_field'))
-		{
-			register_field('acf_field_gravity_forms', dirname(__File__) . '/gravity_forms-v3.php');
-		}
-	}
-
-	/*
-	*  register_fields
-	*
-	*  @description:
-	*  @since: 3.6
-	*  @created: 1/04/13
-	*/
-
-	function register_fields()
-	{
-		include_once('gravity_forms-v4.php');
-	}
+	include_once('gravity_forms-v5.php');
 
 }
 
-new acf_field_gravity_forms_plugin();
+add_action('acf/include_field_types', 'include_field_types_gravity_forms');	
+
+
+
+
+// 3. Include field type for ACF4
+function register_fields_Gravity_Forms() {
+
+	include_once('gravity_forms-v4.php');
+
+}
+
+add_action('acf/register_fields', 'register_fields_gravity_forms');
+
 
 ?>

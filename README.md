@@ -11,7 +11,6 @@ Compatibility
 This add-on will work with:
 
 * version 4 and up
-* version 3 and below
 
 Installation
 ============
