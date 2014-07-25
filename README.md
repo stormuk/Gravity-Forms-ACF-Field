@@ -26,12 +26,7 @@ This add-on can be treated as both a WP plugin and a theme include.
 2.  Edit your functions.php file and add the code below (Make sure the path is correct to include the acf-gravity_forms.php file)
 
 ```
-add_action('acf/register_fields', 'my_register_fields');
-
-function my_register_fields()
-{
   include_once('acf-gravity_forms.php');
-}
 ```
 
 Using the field
