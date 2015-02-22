@@ -116,10 +116,18 @@ class acf_field_gravity_forms extends acf_field
 		// vars
 		$field = array_merge($this->defaults, $field);
 		$choices = array();
-    $forms = RGFormsModel::get_forms(1);
+		//added class exists to show notice if Gravity Forms is not activated
+		if (class_exists('RGFormsModel')) {
+			
+			$forms = RGFormsModel::get_forms(1);
+			
+		}	else {
+			echo "<font style='color:red;font-weight:bold;'>Warning: Gravity Forms is not installed or activated. This field does not function without Gravity Forms!</font>";
+		}
+    
 
-
-    if($forms)
+	//Added isset to prevent undefined variable notice
+    if(isset($forms))
     {
     	foreach( $forms as $form )
     	{
@@ -169,10 +177,10 @@ class acf_field_gravity_forms extends acf_field
     // load form data
     if( is_array($value) )
     {
-    	foreach( $value as $k => $v )
-    	{
-        	$form = RGFormsModel::get_form($v);
-        	$value[ $k ] = $form;
+      foreach( $value as $k => $v )
+      {
+          $form = RGFormsModel::get_form($v);
+          $value[ $k ] = $form;
         }
     }
     else
@@ -188,5 +196,4 @@ class acf_field_gravity_forms extends acf_field
 
 // create field
 new acf_field_gravity_forms();
-
 ?>
