@@ -159,39 +159,34 @@ class acf_field_gravity_forms extends acf_field
 	*  @return	$value	- the modified value
 	*/
 
-	function format_value_for_api( $value, $post_id, $field )
-	{
-		// format value
-    if( !$value )
+	function format_value_for_api( $value, $field )
     {
-    	return false;
+
+    if(!$value || $value == 'null'){
+        return false;
+
     }
-
-
-    if( $value == 'null' )
-    {
-    	return false;
-    }
-
-
-    // load form data
-    if( is_array($value) )
-    {
-      foreach( $value as $k => $v )
-      {
-          $form = RGFormsModel::get_form($v);
-          $value[ $k ] = $form;
+    
+    //If there are multiple forms, construct and return an array of form markup
+    if(is_array($value)){
+        foreach($value as $k => $v){
+          $form = get_post($v);
+          $f = do_shortcode('[gravityform id="'.$form->ID.'" title="'.$form->post_title.'"]');
+          $value[$k] = array();
+          $value[$k] = $f;
         }
-    }
-    else
-    {
-    	$value = RGFormsModel::get_form($value);
+    //Else return single form markup
+
+    }else{
+
+        $form = get_post($value);
+        $value = do_shortcode('[gravityform id="'.$form->ID.'" title="'.$form->post_title.'"]');
     }
 
-
-    // return value
     return $value;
-	}
+
+    }
+
 }
 
 // create field
