@@ -16,14 +16,13 @@ class acf_field_gravity_forms extends acf_field {
   *  @return  n/a
   */
   
-  function __construct()
-  {
+  function __construct() {
     // vars
     $this->name = 'gravity_forms_field';
     $this->label = __('Gravity Forms');
     $this->category = __("Relational",'acf'); // Basic, Content, Choice, etc
     $this->defaults = array(
-      'multiple' => 0,
+      'allow_multiple' => 0,
       'allow_null' => 0
     );
 
@@ -121,13 +120,21 @@ class acf_field_gravity_forms extends acf_field {
 
     // override field settings and render
     $field['choices'] = $choices;
-    $field['type'] = 'select';
+    $field['type']    = 'select';
+		if ( $field['allow_multiple'] ) {
+			$multiple = 'multiple="multiple" data-multiple="1"';
+			echo "<input type=\"hidden\" name=\"{$field['name']}\">";
+		}
+		else $multiple = '';
     ?>
-      <select name="<?php echo $field['name'];?>" id="<?php echo $field['name'];?>">
-        <?php 
+			
+      <select id="<?php echo str_replace(array('[',']'), array('-',''), $field['name']);?>" name="<?php echo $field['name']; if( $field['allow_multiple'] ) echo "[]"; ?>"<?php echo $multiple; ?>>
+        <?php
+					if ( $field['allow_null'] ) echo '<option value="">- Select -</option>';
           foreach ($field['choices'] as $key => $value) : 
             $selected = '';
-            if($field['value'] == $key)
+						
+						if ( (is_array($field['value']) && in_array($key, $field['value'])) || $field['value'] == $key )
               $selected = ' selected="selected"';
             ?>
             <option value="<?php echo $key; ?>"<?php echo $selected;?>><?php echo $value; ?></option>
@@ -136,8 +143,6 @@ class acf_field_gravity_forms extends acf_field {
       </select>
     <?php
   }
-  
-
   
   
   /*
@@ -157,13 +162,12 @@ class acf_field_gravity_forms extends acf_field {
   */
     
   
-  
-  function format_value( $value, $post_id, $field )
-  {
+  function format_value( $value, $post_id, $field ) {
+		
     // format value
     if( !$value )
     {
-      return false;
+      return $value;
     }
 
 
@@ -191,6 +195,9 @@ class acf_field_gravity_forms extends acf_field {
     // return value
     return $value;
   }
+	
 }
+
+
 // create field
 new acf_field_gravity_forms();
