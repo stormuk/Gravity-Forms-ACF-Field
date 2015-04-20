@@ -22,7 +22,7 @@ class acf_field_gravity_forms extends acf_field
 		$this->label = __('Gravity Forms');
 		$this->category = __("Relational",'acf'); // Basic, Content, Choice, etc
 		$this->defaults = array(
-			'multiple' => 0,
+			'allow_multiple' => 0,
 			'allow_null' => 0
 		);
 
@@ -116,7 +116,7 @@ class acf_field_gravity_forms extends acf_field
 		// vars
 		$field = array_merge($this->defaults, $field);
 		$choices = array();
-		//added class exists to show notice if Gravity Forms is not activated
+
 		if (class_exists('RGFormsModel')) {
 			
 			$forms = RGFormsModel::get_forms(1);
@@ -126,7 +126,6 @@ class acf_field_gravity_forms extends acf_field
 		}
     
 
-	//Added isset to prevent undefined variable notice
     if(isset($forms))
     {
     	foreach( $forms as $form )
@@ -146,7 +145,7 @@ class acf_field_gravity_forms extends acf_field
 	/*
 	*  format_value_for_api()
 	*
-	*  This filter is appied to the $value after it is loaded from the db and before it is passed back to the api functions such as the_field
+	*  This filter is applied to the $value after it is loaded from the db and before it is passed back to the api functions such as the_field
 	*
 	*  @type	filter
 	*  @since	3.6
