@@ -1,5 +1,4 @@
 <?php
-
 class acf_field_gravity_forms extends acf_field {
   
   
@@ -16,17 +15,15 @@ class acf_field_gravity_forms extends acf_field {
   *  @return  n/a
   */
   
-  function __construct()
-  {
+  function __construct() {
     // vars
     $this->name = 'gravity_forms_field';
     $this->label = __('Gravity Forms');
     $this->category = __("Relational",'acf'); // Basic, Content, Choice, etc
     $this->defaults = array(
-      'multiple' => 0,
+      'allow_multiple' => 0,
       'allow_null' => 0
     );
-
     // do not delete!
     parent::__construct();
   }
@@ -77,10 +74,7 @@ class acf_field_gravity_forms extends acf_field {
       ),
       'layout'  =>  'horizontal'
     ));
-
   }
-  
-  
   
   /*
   *  render_field()
@@ -105,29 +99,43 @@ class acf_field_gravity_forms extends acf_field {
     *  This will show what data is available
     */
     
-    // vars
-    $field = array_merge($this->defaults, $field);
-    $choices = array();
-    $forms = RGFormsModel::get_forms(1);
-
-
-    if($forms)
+	// vars
+	$field = array_merge($this->defaults, $field);
+	$choices = array();
+	//Show notice if Gravity Forms is not activated
+	if (class_exists('RGFormsModel')) {
+		
+		$forms = RGFormsModel::get_forms(1);
+		
+	}	else {
+		echo "<font style='color:red;font-weight:bold;'>Warning: Gravity Forms is not installed or activated. This field does not function without Gravity Forms!</font>";
+	}
+    
+	//Prevent undefined variable notice
+    if(isset($forms))
     {
       foreach( $forms as $form )
       {
         $choices[ $form->id ] = ucfirst($form->title);
       }
     }
-
     // override field settings and render
     $field['choices'] = $choices;
-    $field['type'] = 'select';
+    $field['type']    = 'select';
+		if ( $field['allow_multiple'] ) {
+			$multiple = 'multiple="multiple" data-multiple="1"';
+			echo "<input type=\"hidden\" name=\"{$field['name']}\">";
+		}
+		else $multiple = '';
     ?>
-      <select name="<?php echo $field['name'];?>" id="<?php echo $field['name'];?>">
-        <?php 
+			
+      <select id="<?php echo str_replace(array('[',']'), array('-',''), $field['name']);?>" name="<?php echo $field['name']; if( $field['allow_multiple'] ) echo "[]"; ?>"<?php echo $multiple; ?>>
+        <?php
+					if ( $field['allow_null'] ) echo '<option value="">- Select -</option>';
           foreach ($field['choices'] as $key => $value) : 
             $selected = '';
-            if($field['value'] == $key)
+						
+						if ( (is_array($field['value']) && in_array($key, $field['value'])) || $field['value'] == $key )
               $selected = ' selected="selected"';
             ?>
             <option value="<?php echo $key; ?>"<?php echo $selected;?>><?php echo $value; ?></option>
@@ -136,8 +144,6 @@ class acf_field_gravity_forms extends acf_field {
       </select>
     <?php
   }
-  
-
   
   
   /*
@@ -155,42 +161,40 @@ class acf_field_gravity_forms extends acf_field {
   *
   *  @return  $value (mixed) the modified value
   */
-    
   
-  
-  function format_value( $value, $post_id, $field )
-  {
-    // format value
-    if( !$value )
-    {
-      return false;
+  function format_value( $value, $post_id, $field ) {
+		
+		//format_value
+		if( !$value )
+		{
+		  return $value;
+		}
+
+		if( $value == 'null' )
+		{
+		  return false;
+		}
+		
+		//If there are multiple forms, construct and return an array of form markup
+		if(is_array($value)){
+			foreach($value as $k => $v){
+			  $form = get_post($v);
+			  $f = do_shortcode('[gravityform id="'.$form->ID.'" title="'.$form->post_title.'"]');
+			  $value[$k] = array();
+			  $value[$k] = $f;
+			}
+			
+		//Else return single form markup
+		} else{
+
+			$form = get_post($value);
+			$value = do_shortcode('[gravityform id="'.$form->ID.'" title="'.$form->post_title.'"]');
+		}
+
+		return $value;
+
     }
-
-
-    if( $value == 'null' )
-    {
-      return false;
-    }
-
-
-    // load form data
-    if( is_array($value) )
-    {
-      foreach( $value as $k => $v )
-      {
-          $form = RGFormsModel::get_form($v);
-          $value[ $k ] = $form;
-        }
-    }
-    else
-    {
-      $value = RGFormsModel::get_form($value);
-    }
-
-
-    // return value
-    return $value;
-  }
+	
 }
 // create field
 new acf_field_gravity_forms();
