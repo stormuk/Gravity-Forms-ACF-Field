@@ -68,7 +68,7 @@ About
 
 Version: 1.1
 
-Written by Adam Pope of [Storm Consultancy](http://www.stormconsultancy.co.uk) and the amazing contributors on [Github](https://github.com/stormuk/Gravity-Forms-ACF-Field/graphs/contributors)
+Written by Adam Pope and Liam Gladdy of [Storm Consultancy](http://www.stormconsultancy.co.uk) and the amazing contributors on [Github](https://github.com/stormuk/Gravity-Forms-ACF-Field/graphs/contributors)
 
 Storm Consultancy are a web design and development agency based in Bath, UK.
 
