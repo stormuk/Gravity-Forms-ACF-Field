@@ -68,7 +68,7 @@ About
 
 Version: 1.1
 
-Written by Adam Pope of Storm Consultancy - <http://www.stormconsultancy.co.uk>
+Written by Adam Pope of [Storm Consultancy](http://www.stormconsultancy.co.uk) and the amazing contributors on [Github](https://github.com/stormuk/Gravity-Forms-ACF-Field/graphs/contributors)
 
 Storm Consultancy are a web design and development agency based in Bath, UK.
 
@@ -80,4 +80,4 @@ Credits
 
 Thanks for Lewis Mcarey for the Users Field ACF add-on on which we based this - https://github.com/lewismcarey/User-Field-ACF-Add-on
 
-Thanks to rocketgenius for the absolutely fantastic Gravity Forms plugin!
+Thanks to rocketgenius for the Gravity Forms plugin!
