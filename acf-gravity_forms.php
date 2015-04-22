@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields: Gravity Forms Field
 Plugin URI: https://github.com/stormuk/Gravity-Forms-ACF-Field
 Description: ACF field to select one or many Gravity Forms
-Version: 1.0.0
+Version: 1.1.0
 Author: @adam_pope of @stormuk
 Author URI: http://www.stormconsultancy.co.uk
 License: MIT
