@@ -161,36 +161,41 @@ class acf_field_gravity_forms extends acf_field
 	function format_value_for_api( $value, $field )
     {
 
-		//format_value
-		if( !$value )
-		{
-		  return $value;
-		}
-
-		if( $value == 'null' )
-		{
-		  return false;
+		//Return false if value is false, null or empty
+		if( !$value || empty($value) ){
+			return false;
 		}
 		
-		//If there are multiple forms, construct and return an array of form markup
-		if(is_array($value)){
+		//If there are multiple forms, construct and return an array of form objects
+		if( is_array($value) && !empty($value) ){
+			
+			$form_objects = array();
 			foreach($value as $k => $v){
 			  $form = GFAPI::get_form( $v );
-			  $f = do_shortcode('[gravityform id="'.$form['id'].'" title="'.$form['title'].'"]');
-			  $value[$k] = array();
-			  $value[$k] = $f;
+			  //Add it if it's not an error object
+			  if( !is_wp_error($form) ){
+				  $form_objects[$k] = $form;
+			  }
 			}
-		
-	    return $value;
+			//Return false if the array is empty
+			if( !empty($form_objects) ){
+				return $form_objects;	
+			}else{
+				return false;
+			}
 			
-		//Else return single form markup
-		} else{
-			//$value can be mixed, make it an int
-			$value = intval($value); 
-			//get the form object
-			$form = GFAPI::get_form( $value );
-			//we can directly echo the shortcode here
-			echo do_shortcode('[gravityform id="'.$form['id'].'" title="'.$form['title'].'"]');
+			
+		//Else return single form object
+		}else{
+
+			$form = GFAPI::get_form(intval($value));
+			//Return the form object if it's not an error object. Otherwise return false. 
+			if( !is_wp_error($form) ){
+				return $form;	
+			}else{
+				return false;
+			}
+			
 		}
 
     }
