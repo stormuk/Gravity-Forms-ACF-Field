@@ -112,11 +112,9 @@ class acf_field_gravity_forms extends acf_field {
 	}
     
 	//Prevent undefined variable notice
-    if(isset($forms))
-    {
-      foreach( $forms as $form )
-      {
-        $choices[ $form->id ] = ucfirst($form->title);
+    if(isset($forms)){
+      foreach( $forms as $form ){
+        $choices[ intval($form->id) ] = ucfirst($form->title);
       }
     }
     // override field settings and render
@@ -128,20 +126,19 @@ class acf_field_gravity_forms extends acf_field {
 		}
 		else $multiple = '';
     ?>
-			
-      <select id="<?php echo str_replace(array('[',']'), array('-',''), $field['name']);?>" name="<?php echo $field['name']; if( $field['allow_multiple'] ) echo "[]"; ?>"<?php echo $multiple; ?>>
+	<select id="<?php echo str_replace(array('[',']'), array('-',''), $field['name']);?>" name="<?php echo $field['name']; if( $field['allow_multiple'] ) echo "[]"; ?>"<?php echo $multiple; ?>>
         <?php
-					if ( $field['allow_null'] ) echo '<option value="">- Select -</option>';
-          foreach ($field['choices'] as $key => $value) : 
-            $selected = '';
-						
-						if ( (is_array($field['value']) && in_array($key, $field['value'])) || $field['value'] == $key )
-              $selected = ' selected="selected"';
-            ?>
-            <option value="<?php echo $key; ?>"<?php echo $selected;?>><?php echo $value; ?></option>
-          <?php endforeach;
-        ?>
-      </select>
+		if ( $field['allow_null'] ) 
+			echo '<option value="">- Select -</option>';
+			
+		foreach ($field['choices'] as $key => $value){
+			$selected = '';
+			if ( (is_array($field['value']) && in_array($key, $field['value'])) || $field['value'] == $key )
+				$selected = ' selected="selected"';
+		?>
+			<option value="<?php echo $key; ?>"<?php echo $selected;?>><?php echo $value; ?></option>
+		<?php } ?>
+	</select>
     <?php
   }
   
@@ -164,38 +161,43 @@ class acf_field_gravity_forms extends acf_field {
   
   function format_value( $value, $post_id, $field ) {
 		
-		//format_value
-		if( !$value )
-		{
-		  return $value;
-		}
-
-		if( $value == 'null' )
-		{
-		  return false;
+		//Return false if value is false, null or empty
+		if( !$value || empty($value) ){
+			return false;
 		}
 		
-		//If there are multiple forms, construct and return an array of form markup
-		if(is_array($value)){
+		//If there are multiple forms, construct and return an array of form objects
+		if( is_array($value) && !empty($value) ){
+			
+			$form_objects = array();
 			foreach($value as $k => $v){
 			  $form = GFAPI::get_form( $v );
-			  $f = do_shortcode('[gravityform id="'.$form['id'].'" title="'.$form['title'].'"]');
-			  $value[$k] = array();
-			  $value[$k] = $f;
+			  //Add it if it's not an error object
+			  if( !is_wp_error($form) ){
+				  $form_objects[$k] = $form;
+			  }
 			}
-		
-	    return $value;
+			//Return false if the array is empty
+			if( !empty($form_objects) ){
+				return $form_objects;	
+			}else{
+				return false;
+			}
 			
-		//Else return single form markup
-		} else{
-			//$value can be mixed, make it an int
-			$value = intval($value); 
-			//get the form object
-			$form = GFAPI::get_form( $value );
-			//we can directly echo the shortcode here
-			echo do_shortcode('[gravityform id="'.$form['id'].'" title="'.$form['title'].'"]');
-		}
+			
+		//Else return single form object
+		}else{
 
+			$form = GFAPI::get_form(intval($value));
+			//Return the form object if it's not an error object. Otherwise return false. 
+			if( !is_wp_error($form) ){
+				return $form;	
+			}else{
+				return false;
+			}
+			
+		}
+		
     }
 
 }

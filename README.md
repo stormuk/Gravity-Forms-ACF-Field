@@ -10,7 +10,8 @@ Compatibility
 
 This add-on will work with:
 
-* version 4 and up
+* version 4
+* Version 5
 
 Installation
 ============
@@ -34,28 +35,37 @@ Using the field
 
 The field lets you pick one or many fields.
 
-The data returned is either a Form object or an array of [Form objects](http://www.gravityhelp.com/documentation/page/Form_Object).
+The data returned is either a Form object, an array of [Form objects](http://www.gravityhelp.com/documentation/page/Form_Object) or false if an error occurred.
 
 If you have selected a single form and you want to display the form on the page, you can use:
 
 ```
 <?php 
-    $form = get_field('your_form_field');
-    gravity_form_enqueue_scripts($form->id, true);
-    gravity_form($form->id, true, true, false, '', true, 1); 
+    $form_object = get_field('your_form_field');
+    gravity_form_enqueue_scripts($form_object['id'], true);
+    gravity_form($form_object['id'], true, true, false, '', true, 1); 
 ?>
 ```
 
-You can find out more about the gravity_form method to embed a form on a page in their [documentation](http://www.gravityhelp.com/documentation/page/Embedding_A_Form#Function_Call)
+or
+
+```
+<?php 
+    $form_object = get_field('your_form_field');
+    echo do_shortcode('[gravityform id="' . $form_object['id'] . '" title="true" description="true" ajax="true"]');
+?>
+```
+
+You can find out more about the gravity_form method to embed a form on a page in their [documentation](http://www.gravityhelp.com/documentation/page/Embedding_A_Form)
 
 If you are using the field to select multiple forms, you will have to iterate over the array.  You can then use the form object as you like:
 
 ```
 <?php
-    $forms = get_field('your_forms');
+    $form_objects = get_field('your_forms');
   
-    foreach($forms as $form){
-        echo $form->title;  
+    foreach($form_objects as $form){
+        echo $form['title'];  
     }
 ?>
 ```
@@ -66,7 +76,7 @@ If you are using the field to select multiple forms, you will have to iterate ov
 About
 =====
 
-Version: 1.1
+Version: 1.2
 
 Written by Adam Pope and Liam Gladdy of [Storm Consultancy](http://www.stormconsultancy.co.uk) and the amazing contributors on [Github](https://github.com/stormuk/Gravity-Forms-ACF-Field/graphs/contributors)
 
