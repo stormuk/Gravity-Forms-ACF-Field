@@ -76,7 +76,7 @@ If you are using the field to select multiple forms, you will have to iterate ov
 About
 =====
 
-Version: 1.2
+Version: 1.2.1
 
 Written by Adam Pope and Liam Gladdy of [Storm Consultancy](http://www.stormconsultancy.co.uk) and the amazing contributors on [Github](https://github.com/stormuk/Gravity-Forms-ACF-Field/graphs/contributors)
 
