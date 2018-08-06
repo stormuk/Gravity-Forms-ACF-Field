@@ -1,7 +1,7 @@
 Gravity-Forms-ACF-Field
 =======================
 
-This is an Advanced Custom Field custom field to select one or many [Gravity Forms](http://www.gravityhelp.com/).
+This is an Advanced Custom Field custom field to select one or many [Gravity Forms](https://www.gravityforms.com/support/).
 
 This provides a field that lets you select from a list of active Gravity Forms.
 
